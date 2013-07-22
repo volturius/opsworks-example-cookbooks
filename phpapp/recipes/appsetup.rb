@@ -1,6 +1,7 @@
 node[:deploy].each do |app_name, deploy|
 
   script "install_composer" do
+
     interpreter "bash"
     user "root"
     cwd "#{deploy[:deploy_to]}/current"
@@ -8,6 +9,7 @@ node[:deploy].each do |app_name, deploy|
     curl -s https://getcomposer.org/installer | php
     php composer.phar install
     EOH
+
   end
 
   template "#{deploy[:deploy_to]}/current/db-connect.php" do
@@ -15,9 +17,7 @@ node[:deploy].each do |app_name, deploy|
     mode 0660
     group deploy[:group]
 
-    if platform?("ubuntu")
-      owner "www-data"
-    elsif platform?("amazon")   
+    if platform?("amazon")   
       owner "apache"
     end
 
